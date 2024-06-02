@@ -2,6 +2,7 @@ version: "3"
 
 services:
   frontend:
+    image: spygram/todo-fe:latest
     build: ./frontend
     container_name: react-app
     ports:
@@ -14,8 +15,9 @@ services:
       - mern-networks
 
   backend:
+    image: spygram/todo-be:latest
     build: ./backend
-    container_name: node-api
+    container_name: node-app
     ports:
       - "5000:5000"
     restart: always
