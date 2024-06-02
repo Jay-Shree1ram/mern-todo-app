@@ -5,8 +5,10 @@ pipeline {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials-id')
         FRONTEND_IMAGE = 'spygram/frontend-image'
         BACKEND_IMAGE = 'spygram/backend-image'
+	DATABASE_IMAGE = 'spygram/mongodata'
         FRONTEND_TAG = 'latest'
         BACKEND_TAG = 'latest'
+	DATABASE_TAG = 'latest'
     }
     
     stages {
@@ -35,6 +37,16 @@ pipeline {
                 }
             }
         }
+
+	stage("Build Database") {
+            steps {
+                script {
+                    dir('backend') {
+                        sh 'docker build -t $DATABASE_IMAGE:$DATABASE_TAG .'
+                    }
+                }
+            }
+        }
         
         stage("Push Frontend Image") {
             steps {
@@ -51,6 +63,16 @@ pipeline {
                 script {
                     docker.withRegistry('', 'dockerhub-credentials-id') {
                         sh 'docker push $BACKEND_IMAGE:$BACKEND_TAG'
+                    }
+                }
+            }
+        }
+
+	stage("Push Database Image") {
+            steps {
+                script {
+                    docker.withRegistry('', 'dockerhub-credentials-id') {
+                        sh 'docker push $DATABASE_IMAGE:$DATABASE_TAG'
                     }
                 }
             }
