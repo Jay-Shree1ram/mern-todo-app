@@ -16,50 +16,15 @@ pipeline {
             }
         }
         
-        stage("Build Frontend") {
-            steps {
-                script {
-                    dir('frontend') {
-                        sh 'docker build -t $FRONTEND_IMAGE:$FRONTEND_TAG .'
-                    }
-                }
-            }
-        }
-        
-        stage("Build Backend") {
-            steps {
-                script {
-                    dir('backend') {
-                        sh 'docker build -t $BACKEND_IMAGE:$BACKEND_TAG .'
-                    }
-                }
-            }
-        }
-        
-        stage("Push Frontend Image") {
-            steps {
-                script {
-                    docker.withRegistry('', 'dockerhub-credentials-id') {
-                        sh 'docker push $FRONTEND_IMAGE:$FRONTEND_TAG'
-                    }
-                }
-            }
-        }
-        
-        stage("Push Backend Image") {
-            steps {
-                script {
-                    docker.withRegistry('', 'dockerhub-credentials-id') {
-                        sh 'docker push $BACKEND_IMAGE:$BACKEND_TAG'
-                    }
-                }
+        stage("build docker image"){
+            steps{
+                sh "docker compose up -d --build"
             }
         }
     }
-    
     post {
         always {
             cleanWs()
         }
     }
-}
+}	
