@@ -1,3 +1,4 @@
+
 pipeline {
     agent any
     
@@ -22,19 +23,20 @@ pipeline {
             }
         }
 	
-	stage("Push image"){
-		steps{
-		    script{
-			docker.withRegistry('', 'dockerhub-credentials-id') {
-				sh 'docker push $FRONTEND_IMAGE:$FRONTEND_TAG'
-			}
-			
-			docker.withRegistry('', 'dockerhub-credentials-id') {
-                                sh 'docker push $BACKEND_IMAGE:$BACKEND_TAG'
-                        }
-		
-		    }
-		}
+        stage("Push image"){
+            steps{
+                script{
+                    docker.withRegistry('', 'dockerhub-credentials-id') {
+                        sh 'docker push $FRONTEND_IMAGE:$FRONTEND_TAG'
+                    }
+                
+                    docker.withRegistry('', 'dockerhub-credentials-id') {
+                        sh 'docker push $BACKEND_IMAGE:$BACKEND_TAG'
+                    }
+            
+                }
+            }
+        }
     }
     post {
         always {
@@ -42,3 +44,4 @@ pipeline {
         }
     }
 }	
+
