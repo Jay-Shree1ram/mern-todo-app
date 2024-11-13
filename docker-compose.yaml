@@ -34,7 +34,7 @@ services:
       - "27018:27017"
     restart: always
     volumes:
-      - new_mongo:/data/db
+       - /home/sd/mongobkup:/data/db
     networks:
       - mern-networks
 
