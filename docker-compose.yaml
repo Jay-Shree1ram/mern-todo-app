@@ -2,11 +2,11 @@ version: "3"
 
 services:
   frontend:
-    image: spygram/todo-fe:latest
+    image: kajirocks/todo-fe
     build: ./frontend
     container_name: react-app
     ports:
-      - "3001:3000"
+      - "3000:3000"
     restart: always
     stdin_open: true
     tty: true
@@ -16,7 +16,7 @@ services:
       - mern-networks
 
   backend:
-    image: spygram/todo-be:latest
+    image: kajirocks/todo-be
     build: ./backend
     container_name: node-app
     ports:
@@ -31,10 +31,10 @@ services:
     image: mongo:4.0.5-xenial
     container_name: mongo-db
     ports:
-      - "27017:27017"
+      - "27018:27017"
     restart: always
     volumes:
-      - /home/sd/mongobkup:/data/db
+      - new_mongo:/data/db
     networks:
       - mern-networks
 
